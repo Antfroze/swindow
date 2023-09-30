@@ -6,7 +6,7 @@
 namespace swindow {
 class Window : public InternalWindow {
    public:
-    Window(WindowOptions& opts);
+    Window(const WindowOptions& opts);
     inline ~Window() { delete eventPipeline; }
 
     void Center() override;

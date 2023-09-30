@@ -144,7 +144,7 @@ using namespace swindow;
 @end
 
 namespace swindow {
-Window::Window(WindowOptions& opts) : eventPipeline(new WindowEventPipeline()) {
+Window::Window(const WindowOptions& opts) : eventPipeline(new WindowEventPipeline()) {
     @autoreleasepool {
         [NSApplication sharedApplication];
 

@@ -11,8 +11,7 @@ using namespace swindow;
 @end
 
 @implementation OSXApplicationDelegate
-- (NSApplicationTerminateReply)applicationShouldTerminate:
-    (NSApplication*)sender {
+- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication*)sender {
     for (InternalWindow* window : swindow::swindow.windows) {
         window->Close();
     }
@@ -103,8 +102,7 @@ using namespace swindow;
     NSWindow* mainWindow = [NSApp mainWindow];
     NSWindow* layerWindow = [self window];
     if (mainWindow || layerWindow) {
-        CGFloat scale = [(layerWindow != nil) ? layerWindow
-                                              : mainWindow backingScaleFactor];
+        CGFloat scale = [(layerWindow != nil) ? layerWindow : mainWindow backingScaleFactor];
         CALayer* layer = self.layer;
         if ([layer respondsToSelector:@selector(contentsScale)]) {
             [self.layer setContentsScale:scale];
@@ -150,11 +148,9 @@ Window::Window(WindowOptions& opts) : eventPipeline(new WindowEventPipeline()) {
     @autoreleasepool {
         [NSApplication sharedApplication];
 
-        OSXApplicationDelegate* appDelegate =
-            [[OSXApplicationDelegate alloc] init];
+        OSXApplicationDelegate* appDelegate = [[OSXApplicationDelegate alloc] init];
         if (!appDelegate) {
-            throw std::runtime_error(
-                "Cocoa: Failed to create application delegate");
+            throw std::runtime_error("Cocoa: Failed to create application delegate");
         }
         [NSApp setDelegate:appDelegate];
 
@@ -169,9 +165,8 @@ Window::Window(WindowOptions& opts) : eventPipeline(new WindowEventPipeline()) {
 
         // End of Application initialization
 
-        NSRect contentRect =
-            NSMakeRect(opts.x, opts.y, std::min(opts.width, opts.maxWidth),
-                       std::min(opts.height, opts.maxHeight));
+        NSRect contentRect = NSMakeRect(opts.x, opts.y, std::min(opts.width, opts.maxWidth),
+                                        std::min(opts.height, opts.maxHeight));
         NSWindowStyleMask styleMask{};
 
         if (opts.showTitle) {
@@ -190,18 +185,15 @@ Window::Window(WindowOptions& opts) : eventPipeline(new WindowEventPipeline()) {
             styleMask |= NSWindowStyleMaskResizable;
         }
 
-        OSXWindow* window =
-            [[OSXWindow alloc] initWithContentRect:contentRect
-                                         styleMask:styleMask
-                                           backing:NSBackingStoreBuffered
-                                             defer:NO];
-        OSXWindowDelegate* delegate =
-            [[OSXWindowDelegate alloc] initWithWindow:this];
+        OSXWindow* window = [[OSXWindow alloc] initWithContentRect:contentRect
+                                                         styleMask:styleMask
+                                                           backing:NSBackingStoreBuffered
+                                                             defer:NO];
+        OSXWindowDelegate* delegate = [[OSXWindowDelegate alloc] initWithWindow:this];
         [window setDelegate:delegate];
 
-        NSString* nsTitle =
-            [NSString stringWithCString:opts.title
-                               encoding:[NSString defaultCStringEncoding]];
+        NSString* nsTitle = [NSString stringWithCString:opts.title
+                                               encoding:[NSString defaultCStringEncoding]];
 
         if (strlen(opts.title)) {
             [window setTitle:nsTitle];
@@ -262,9 +254,8 @@ void Window::SetPosition(int x, int y) {
 void Window::SetTitle(const char* title) {
     NSWindow* window = (NSWindow*)nsWindow;
 
-    NSString* nsTitle =
-        [NSString stringWithCString:title
-                           encoding:[NSString defaultCStringEncoding]];
+    NSString* nsTitle = [NSString stringWithCString:title
+                                           encoding:[NSString defaultCStringEncoding]];
     [window setTitle:nsTitle];
 }
 
@@ -313,8 +304,7 @@ uint32_t Window::GetMaxHeight() {
 }
 
 const char* Window::GetTitle() {
-    return
-        [[(NSWindow*)nsWindow title] cStringUsingEncoding:NSUTF8StringEncoding];
+    return [[(NSWindow*)nsWindow title] cStringUsingEncoding:NSUTF8StringEncoding];
 }
 
 bool Window::IsFocused() {
@@ -322,11 +312,7 @@ bool Window::IsFocused() {
 }
 
 void Window::SetVisible(bool visible) {
-    if (visible) {
-        [(NSWindow*)nsWindow orderFront:nil];
-    } else {
-        [(NSWindow*)nsWindow orderBack:nil];
-    }
+    visible ? [(NSWindow*)nsWindow orderFront:nil] : [(NSWindow*)nsWindow orderBack:nil];
 }
 
 void Window::Close() {

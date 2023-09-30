@@ -52,7 +52,7 @@ function smake.run()
   standard('c++2a')
   inputr('src', 'cpp')
   inputr('src', 'mm')
-  include({ 'src', 'include' })
+  include('include')
 
   if platform.is_osx then
     framework('Cocoa', 'IOKit', 'CoreFoundation', 'CoreVideo')

@@ -1,4 +1,4 @@
-#include <swindow.hpp>
+#include <swindow/swindow.hpp>
 
 #include <iostream>
 

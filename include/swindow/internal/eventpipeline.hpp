@@ -3,8 +3,7 @@
 #include <functional>
 #include "event.hpp"
 
-typedef std::function<void(const unsigned width, const unsigned height)>
-    ResizeCallback;
+typedef std::function<void(const unsigned width, const unsigned height)> ResizeCallback;
 
 namespace swindow {
 class InternalEventPipeline {
@@ -14,15 +13,12 @@ class InternalEventPipeline {
     virtual void Poll() = 0;
     virtual void Wait() = 0;
 
-    inline void SubscribeToResize(ResizeCallback cb) {
-        resizeCallbacks.push_back(cb);
-    }
+    inline void SubscribeToResize(ResizeCallback cb) { resizeCallbacks.push_back(cb); }
 
     template <typename T>
-    inline void BindToResize(void (T::*cb)(const unsigned, const unsigned),
-                             T* instance) {
-        resizeCallbacks.push_back(std::bind(cb, instance, std::placeholders::_1,
-                                            std::placeholders::_2));
+    inline void BindToResize(void (T::*cb)(const unsigned, const unsigned), T* instance) {
+        resizeCallbacks.push_back(
+            std::bind(cb, instance, std::placeholders::_1, std::placeholders::_2));
     }
 
     inline void HandleResize(unsigned width, unsigned height) {

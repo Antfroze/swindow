@@ -12,8 +12,7 @@ enum class WindowEventType {
 };
 
 struct WindowResizeData {
-    WindowResizeData(unsigned width, unsigned height)
-        : width(width), height(height) {}
+    WindowResizeData(unsigned width, unsigned height) : width(width), height(height) {}
 
     // new width of window viewport
     unsigned width, height;
@@ -26,8 +25,7 @@ union WindowEventData {
 };
 
 struct WindowEvent {
-    inline WindowEvent(WindowEventType type = WindowEventType::None)
-        : type(type) {}
+    inline WindowEvent(WindowEventType type = WindowEventType::None) : type(type) {}
     inline WindowEvent(WindowResizeData data) : type(WindowEventType::Resize) {
         this->data.resize = data;
     }

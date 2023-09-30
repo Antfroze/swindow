@@ -1,6 +1,6 @@
 #pragma once
 
-#include <event.hpp>
+#include "event.hpp"
 
 namespace swindow {
 struct WindowOptions {

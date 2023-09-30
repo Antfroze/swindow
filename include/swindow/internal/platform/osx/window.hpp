@@ -1,8 +1,7 @@
 #pragma once
 
-#include <memory>
-#include <window.hpp>
-#include "osx_eventpipeline.hpp"
+#include <swindow/internal/window.hpp>
+#include "eventpipeline.hpp"
 
 namespace swindow {
 class Window : public InternalWindow {

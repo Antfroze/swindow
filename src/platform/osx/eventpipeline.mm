@@ -1,4 +1,4 @@
-#include <platform/osx/osx_eventpipeline.hpp>
+#include <swindow/internal/platform/osx/eventpipeline.hpp>
 
 #include <AppKit/AppKit.h>
 

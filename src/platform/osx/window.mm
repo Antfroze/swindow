@@ -1,10 +1,9 @@
-#include <platform/osx/osx_window.hpp>
+#include <swindow/internal/platform/osx/window.hpp>
 
 #include <AppKit/AppKit.h>
 #include <Foundation/Foundation.h>
-#include <event.hpp>
-#include <internal.hpp>
-#include <stdexcept>
+#include <swindow/internal/event.hpp>
+#include <swindow/internal/global.hpp>
 
 using namespace swindow;
 

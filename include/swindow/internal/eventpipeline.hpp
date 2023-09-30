@@ -1,8 +1,7 @@
 #pragma once
 
-#include <event.hpp>
 #include <functional>
-#include <vector>
+#include "event.hpp"
 
 typedef std::function<void(const unsigned width, const unsigned height)>
     ResizeCallback;

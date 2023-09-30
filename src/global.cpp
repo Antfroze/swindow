@@ -1,4 +1,4 @@
-#include <internal.hpp>
+#include <swindow/internal/global.hpp>
 
 namespace swindow {
 WindowGlobal swindow;

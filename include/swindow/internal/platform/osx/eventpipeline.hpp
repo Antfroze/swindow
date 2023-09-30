@@ -1,8 +1,8 @@
 #pragma once
 
-#include <eventpipeline.hpp>
-#include <internal.hpp>
 #include <stdexcept>
+#include <swindow/internal/eventpipeline.hpp>
+#include <swindow/internal/global.hpp>
 #include <thread>
 
 namespace swindow {

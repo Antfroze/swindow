@@ -1,9 +1,9 @@
 #pragma once
 
+#include <eventpipeline.hpp>
+#include <internal.hpp>
 #include <stdexcept>
 #include <thread>
-#include "../../eventpipeline.hpp"
-#include "../../internal.hpp"
 
 namespace swindow {
 struct WindowEventPipeline : public InternalEventPipeline {

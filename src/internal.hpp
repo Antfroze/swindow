@@ -2,7 +2,7 @@
 
 #include <thread>
 #include <vector>
-#include "window.hpp"
+#include <window.hpp>
 
 namespace swindow {
 const std::thread::id MAIN_THREAD_ID = std::this_thread::get_id();

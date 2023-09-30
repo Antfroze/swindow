@@ -10,24 +10,24 @@ local function moveCompiledFiles()
 
   for file in files:gmatch('%S+') do
     if file:match('o$') then
-      utils.ExecuteCommand('mv ' .. file .. ' out/')
+      utils.ExecuteCommand('mv ' .. file .. ' lib/')
     end
   end
 end
 
 local function removeCompiledFiles()
-  local files = utils.ExecuteCommand('ls out/', '*all');
+  local files = utils.ExecuteCommand('ls lib/', '*all');
 
   for file in files:gmatch('%S+') do
     if file:match('o$') then
-      utils.ExecuteCommand('rm out/' .. file)
+      utils.ExecuteCommand('rm lib/' .. file)
     end
   end
 end
 
 function smake.build()
-  if not fs.Exists("out") then
-    fs.CreateFolder("out")
+  if not fs.Exists("lib") then
+    fs.CreateFolder("lib")
   end
 
   standard('c++2a')
@@ -36,16 +36,11 @@ function smake.build()
   inputr('src', 'mm')
   include({ 'src', 'include' })
 
-
-  if not fs.Exists('out') then
-    fs.CreateFolder('out')
-  end
-
   generateCompileFlags()
   build()
 
   moveCompiledFiles()
-  utils.ExecuteCommand('ar rcs out/libswindow.a out/*.o')
+  utils.ExecuteCommand('ar rcs lib/libswindow.a lib/*.o')
   removeCompiledFiles()
 end
 
@@ -58,11 +53,6 @@ function smake.run()
   inputr('src', 'cpp')
   inputr('src', 'mm')
   include({ 'src', 'include' })
-
-
-  if not fs.Exists('out') then
-    fs.CreateFolder('out')
-  end
 
   if platform.is_osx then
     framework('Cocoa', 'IOKit', 'CoreFoundation', 'CoreVideo')

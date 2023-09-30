@@ -4,7 +4,6 @@
 #include <Foundation/Foundation.h>
 #include <event.hpp>
 #include <internal.hpp>
-#include <exception>
 #include <stdexcept>
 
 using namespace swindow;
@@ -237,7 +236,9 @@ Window::Window(WindowOptions& opts) : eventPipeline(new WindowEventPipeline()) {
         }
 
         [NSApp activateIgnoringOtherApps:YES];
-        [window orderFront:nil];
+        if (opts.visible) {
+            [window orderFront:nil];
+        }
 
         this->nsWindow = window;
         this->view = view;

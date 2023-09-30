@@ -3,3 +3,4 @@ smake
 out
 .vscode
 compile_flags.txt
+lib

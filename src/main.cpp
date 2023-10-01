@@ -12,8 +12,8 @@ int main() {
         std::cout << height << std::endl;
     });
 
-    window.eventPipeline->SubscribeTo(WindowEventType::Close,
-                                      []() { std::cout << "Closing" << std::endl; });
+    window.eventPipeline->SubscribeTo(
+        WindowEventType::Close, [](unsigned id) { std::cout << "Closing " << id << std::endl; });
 
     while (!window.ShouldClose()) {
         window.eventPipeline->Poll();

@@ -6,7 +6,7 @@
 #include "event.hpp"
 
 using ResizeCallback = std::function<void(const unsigned width, const unsigned height)>;
-using CloseCallback = std::function<void()>;
+using CloseCallback = std::function<void(const unsigned id)>;
 using Callback = std::variant<ResizeCallback, CloseCallback>;
 
 namespace swindow {

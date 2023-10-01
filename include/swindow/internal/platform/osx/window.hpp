@@ -18,18 +18,20 @@ class Window : public InternalWindow {
     void SetPosition(int x, int y) override;
     void SetTitle(const char* title) override;
 
-    unsigned GetWidth() override;
-    unsigned GetHeight() override;
-    unsigned GetMinWidth() override;
-    unsigned GetMinHeight() override;
-    unsigned GetMaxWidth() override;
-    unsigned GetMaxHeight() override;
-    const char* GetTitle() override;
-    bool IsFocused() override;
+    void OnResize(unsigned width, unsigned height);
+    unsigned GetWidth() const override;
+    unsigned GetHeight() const override;
+    unsigned GetMinWidth() const override;
+    unsigned GetMinHeight() const override;
+    unsigned GetMaxWidth() const override;
+    unsigned GetMaxHeight() const override;
+    const char* GetTitle() const override;
+    bool IsFocused() const override;
+    unsigned GetId() const override;
 
     void SetLayer(void* layer);
 
-    inline void* GetNSWindow() { return nsWindow; }
+    inline void* GetNSWindow() const { return nsWindow; }
 
     WindowEventPipeline* eventPipeline;
 

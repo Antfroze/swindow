@@ -2,8 +2,6 @@
 
 namespace swindow {
 enum class WindowEventType {
-    None = 0,
-
     // Closing a window
     Close,
 
@@ -25,7 +23,6 @@ union WindowEventData {
 };
 
 struct WindowEvent {
-    inline WindowEvent(WindowEventType type = WindowEventType::None) : type(type) {}
     inline WindowEvent(WindowResizeData data) : type(WindowEventType::Resize) {
         this->data.resize = data;
     }

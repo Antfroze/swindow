@@ -1,9 +1,13 @@
 #pragma once
 
+#include <any>
 #include <functional>
+#include <unordered_map>
 #include "event.hpp"
 
-typedef std::function<void(const unsigned width, const unsigned height)> ResizeCallback;
+using ResizeCallback = std::function<void(const unsigned width, const unsigned height)>;
+using CloseCallback = std::function<void()>;
+using Callback = std::variant<ResizeCallback, CloseCallback>;
 
 namespace swindow {
 class InternalEventPipeline {
@@ -13,21 +17,29 @@ class InternalEventPipeline {
     virtual void Poll() = 0;
     virtual void Wait() = 0;
 
-    inline void SubscribeToResize(ResizeCallback cb) { resizeCallbacks.push_back(cb); }
-
-    template <typename T>
-    inline void BindToResize(void (T::*cb)(const unsigned, const unsigned), T* instance) {
-        resizeCallbacks.push_back(
-            std::bind(cb, instance, std::placeholders::_1, std::placeholders::_2));
+    inline void SubscribeTo(WindowEventType type, const Callback& cb) {
+        eventCallbacks[type].push_back(cb);
     }
 
-    inline void HandleResize(unsigned width, unsigned height) {
-        for (ResizeCallback cb : resizeCallbacks) {
-            cb(width, height);
+    template <typename R, typename T, typename U, typename... Args>
+    inline void SubscribeTo(WindowEventType type, R (T::*f)(Args...), U p) {
+        eventCallbacks[type].push_back([p, f](Args... args) -> R { return (p->*f)(args...); });
+    };
+
+    template <typename... Args>
+    inline void HandleEvent(WindowEventType type, Args... args) {
+        for (Callback& cb : eventCallbacks[type]) {
+            std::visit(
+                [&args...](const auto& func) {
+                    if constexpr (std::is_invocable_v<decltype(func), Args...>) {
+                        func(args...);
+                    }
+                },
+                cb);
         }
     }
 
    protected:
-    std::vector<ResizeCallback> resizeCallbacks;
+    std::unordered_map<WindowEventType, std::vector<Callback>> eventCallbacks;
 };
 }  // namespace swindow

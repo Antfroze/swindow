@@ -36,16 +36,17 @@ class InternalWindow {
     virtual void SetFocus(bool b) = 0;
     virtual void SetPosition(int x, int y) = 0;
     virtual void SetTitle(const char* title) = 0;
-    virtual unsigned GetWidth() = 0;
-    virtual unsigned GetHeight() = 0;
-    virtual unsigned GetMinWidth() = 0;
-    virtual unsigned GetMinHeight() = 0;
-    virtual unsigned GetMaxWidth() = 0;
-    virtual unsigned GetMaxHeight() = 0;
-    virtual const char* GetTitle() = 0;
-    virtual bool IsFocused() = 0;
 
-    inline bool ShouldClose() { return shouldClose; }
+    virtual unsigned GetWidth() const = 0;
+    virtual unsigned GetHeight() const = 0;
+    virtual unsigned GetMinWidth() const = 0;
+    virtual unsigned GetMinHeight() const = 0;
+    virtual unsigned GetMaxWidth() const = 0;
+    virtual unsigned GetMaxHeight() const = 0;
+    virtual const char* GetTitle() const = 0;
+    virtual bool IsFocused() const = 0;
+    inline bool ShouldClose() const { return shouldClose; }
+    virtual unsigned GetId() const = 0;
 
    protected:
     bool shouldClose = false;

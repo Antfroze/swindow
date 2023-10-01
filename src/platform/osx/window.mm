@@ -2,6 +2,7 @@
 
 #include <AppKit/AppKit.h>
 #include <Foundation/Foundation.h>
+#include <iostream>
 #include <swindow/internal/event.hpp>
 #include <swindow/internal/global.hpp>
 
@@ -83,11 +84,12 @@ using namespace swindow;
 
     NSRect rect = [nsWindow contentRectForFrameRect:[nsWindow frame]];
 
-    window->eventPipeline->HandleResize(rect.size.width, rect.size.height);
+    window->eventPipeline->HandleEvent(WindowEventType::Resize, rect.size.width, rect.size.height);
 }
 
 - (BOOL)windowShouldClose:(NSWindow*)sender {
     window->Close();
+    window->eventPipeline->HandleEvent(WindowEventType::Close);
     return NO;
 }
 @end
@@ -239,6 +241,10 @@ Window::Window(const WindowOptions& opts) : eventPipeline(new WindowEventPipelin
     }
 }
 
+void Window::OnResize(unsigned width, unsigned height) {
+    std::cout << width << std::endl;
+}
+
 void Window::Center() {
     [(NSWindow*)nsWindow center];
 }
@@ -278,37 +284,41 @@ void Window::SetFocus(bool b) {
     }
 }
 
-uint32_t Window::GetWidth() {
+uint32_t Window::GetWidth() const {
     return NSWidth([(NSWindow*)nsWindow frame]);
 }
 
-uint32_t Window::GetHeight() {
+uint32_t Window::GetHeight() const {
     NSWindow* window = (NSWindow*)nsWindow;
     return NSHeight([window contentRectForFrameRect:[window frame]]);
 }
 
-uint32_t Window::GetMinWidth() {
+uint32_t Window::GetMinWidth() const {
     return [(NSWindow*)nsWindow minSize].width;
 }
 
-uint32_t Window::GetMinHeight() {
+uint32_t Window::GetMinHeight() const {
     return [(NSWindow*)nsWindow minSize].height;
 }
 
-uint32_t Window::GetMaxWidth() {
+uint32_t Window::GetMaxWidth() const {
     return [(NSWindow*)nsWindow maxSize].width;
 }
 
-uint32_t Window::GetMaxHeight() {
+uint32_t Window::GetMaxHeight() const {
     return [(NSWindow*)nsWindow maxSize].height;
 }
 
-const char* Window::GetTitle() {
+const char* Window::GetTitle() const {
     return [[(NSWindow*)nsWindow title] cStringUsingEncoding:NSUTF8StringEncoding];
 }
 
-bool Window::IsFocused() {
+bool Window::IsFocused() const {
     return [(NSWindow*)nsWindow isKeyWindow];
+}
+
+unsigned Window::GetId() const {
+    return [(NSWindow*)nsWindow windowNumber];
 }
 
 void Window::SetVisible(bool visible) {

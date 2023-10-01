@@ -89,7 +89,7 @@ using namespace swindow;
 
 - (BOOL)windowShouldClose:(NSWindow*)sender {
     window->eventPipeline->HandleEvent(WindowEventType::Close, window->GetId());
-    window->Close();
+    // window->Close();
     return NO;
 }
 @end

@@ -2,6 +2,7 @@
 
 #include <AppKit/AppKit.h>
 #include <iostream>
+#include <swindow/internal/platform/osx/event_queue.hpp>
 
 @interface ApplicationDelegate : NSObject <NSApplicationDelegate>
 @end
@@ -42,7 +43,7 @@
 @end
 
 namespace swindow {
-RunCallback* AppState::callback = nullptr;
+WindowEventQueue* AppState::eventQueue = nullptr;
 
 void AppState::Init() {
     NSApplication* app = [NSApplication sharedApplication];
@@ -59,13 +60,14 @@ void AppState::Init() {
     }
 
     [app setActivationPolicy:NSApplicationActivationPolicyRegular];
+    [app activateIgnoringOtherApps:YES];
 }
 
-void AppState::SetCallback(RunCallback* callback) {
-    AppState::callback = callback;
+void AppState::SetQueue(WindowEventQueue* eventQueue) {
+    AppState::eventQueue = eventQueue;
 }
 
-void AppState::HandleEvent(const WindowEvent& event) {
-    (*AppState::callback)(event);
+void AppState::HandleEvent(EventType type, const EventData& data) {
+    eventQueue->HandleEvent(type, data);
 }
 }  // namespace swindow

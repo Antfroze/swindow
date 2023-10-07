@@ -5,10 +5,21 @@
 using namespace swindow;
 
 int main() {
-    EventLoop loop;
+    WindowEventQueue queue;
     Window window;
 
-    loop.Run([](const WindowEvent& event) { std::cout << "WHAT" << std::endl; });
+    queue.SubscribeTo(EventType::Resized, [](const EventData& data) {
+        const WindowResizeData& resizeData = data.As<WindowResizeData>();
+        // std::cout << resizeData.width << std::endl;
+    });
+
+    queue.SubscribeTo(EventType::CloseRequested, [](const EventData& data) {
+        std::cout << "cLosing " << data.id << std::endl;
+    });
+
+    while (true) {
+        queue.Wait();
+    }
 
     return 0;
 }

@@ -58,6 +58,8 @@ function smake.run()
     framework('Cocoa', 'IOKit', 'CoreFoundation', 'CoreVideo')
   end
 
+  flags('-O3')
+
   generateCompileFlags()
   output('out/swindow')
   build()
@@ -66,3 +68,11 @@ function smake.run()
 end
 
 smake.i = smake.install
+
+function smake.cmake()
+  if not fs.Exists("build") then
+    fs.CreateFolder("build")
+  end
+
+  runIn('build', 'cmake .. && make')
+end

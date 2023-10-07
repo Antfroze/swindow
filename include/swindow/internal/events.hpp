@@ -1,40 +1,27 @@
 #pragma once
 
 namespace swindow {
-enum ControlFlow {
-    // Continiously iterage, reguardless of whether or not new events are avaiable to process.
-    Poll,
-    // Pauses the thread when waiting for new events.
-    Wait
+enum class EventType {
+    Resized,
+    CloseRequested,
 };
 
-enum class WindowEventType {
-    // Closing a window
-    Close,
+struct EventData {
+    inline EventData(unsigned id) : id(id) {}
 
-    // Resizing a window
-    Resize,
+    template <typename T>
+    inline T As() const {
+        return reinterpret_cast<const T&>(*this);
+    }
+
+    unsigned id;
 };
 
-struct WindowResizeData {
-    WindowResizeData(unsigned width, unsigned height) : width(width), height(height) {}
+struct WindowResizeData : EventData {
+    WindowResizeData(unsigned id, unsigned width, unsigned height)
+        : EventData(id), width(width), height(height) {}
 
     // new width of window viewport
     unsigned width, height;
-};
-
-union WindowEventData {
-    WindowEventData() {}
-
-    WindowResizeData resize;
-};
-
-struct WindowEvent {
-    inline WindowEvent(WindowResizeData data) : type(WindowEventType::Resize) {
-        this->data.resize = data;
-    }
-
-    WindowEventData data;
-    WindowEventType type;
 };
 }  // namespace swindow

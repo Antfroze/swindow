@@ -1,15 +1,17 @@
 #pragma once
 
-#include <swindow/internal/event_loop.hpp>
+#include <swindow/internal/events.hpp>
 
 namespace swindow {
+class WindowEventQueue;
+
 class AppState {
    public:
     static void Init();
-    static void SetCallback(RunCallback* callback);
-    static void HandleEvent(const WindowEvent& event);
+    static void SetQueue(WindowEventQueue* eventQueue);
+    static void HandleEvent(EventType type, const EventData& data);
 
    private:
-    static RunCallback* callback;
+    static WindowEventQueue* eventQueue;
 };
 }  // namespace swindow

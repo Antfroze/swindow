@@ -4,52 +4,9 @@
 #include <Foundation/Foundation.h>
 #include <iostream>
 #include <swindow/internal/events.hpp>
-#include <swindow/internal/global.hpp>
 #include <swindow/internal/platform/osx/app_state.hpp>
 
 using namespace swindow;
-
-@interface OSXApplicationDelegate : NSObject <NSApplicationDelegate>
-@end
-
-@implementation OSXApplicationDelegate
-- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication*)sender {
-    for (InternalWindow* window : swindow::swindow.windows) {
-        window->Close();
-    }
-
-    return NSTerminateCancel;
-}
-
-- (void)applicationWillFinishLaunching:(NSNotification*)notification {
-    id menubar = [[NSMenu new] autorelease];
-    id appMenuItem = [[NSMenuItem new] autorelease];
-    [menubar addItem:appMenuItem];
-    [NSApp setMainMenu:menubar];
-    id appMenu = [[NSMenu new] autorelease];
-    id appName = [[NSProcessInfo processInfo] processName];
-    id quitMenuItem = [[[NSMenuItem alloc] initWithTitle:@"Quit"
-                                                  action:@selector(terminate:)
-                                           keyEquivalent:@"q"] autorelease];
-    [appMenu addItem:quitMenuItem];
-    [appMenuItem setSubmenu:appMenu];
-}
-
-- (void)applicationDidFinishLaunching:(NSNotification*)notification {
-    NSEvent* event = [NSEvent otherEventWithType:NSEventTypeApplicationDefined
-                                        location:NSMakePoint(0, 0)
-                                   modifierFlags:0
-                                       timestamp:0
-                                    windowNumber:0
-                                         context:nil
-                                         subtype:0
-                                           data1:0
-                                           data2:0];
-    [NSApp postEvent:event atStart:YES];
-
-    [NSApp stop:nil];
-}
-@end
 
 @interface OSXWindow : NSWindow
 @end
@@ -85,12 +42,12 @@ using namespace swindow;
 
     NSRect rect = [nsWindow contentRectForFrameRect:[nsWindow frame]];
 
-    // window->eventPipeline->HandleEvent(WindowEventType::Resize, rect.size.width, rect.size.height);
-    AppState::HandleEvent(WindowEvent(WindowResizeData(rect.size.width, rect.size.height)));
+    AppState::HandleEvent(EventType::Resized,
+                          WindowResizeData(window->GetId(), rect.size.width, rect.size.height));
 }
 
 - (BOOL)windowShouldClose:(NSWindow*)sender {
-    // window->eventPipeline->HandleEvent(WindowEventType::Close, window->GetId());
+    AppState::HandleEvent(EventType::CloseRequested, EventData(window->GetId()));
     window->Close();
     return NO;
 }
@@ -150,25 +107,6 @@ using namespace swindow;
 namespace swindow {
 Window::Window(const WindowOptions& opts) {
     @autoreleasepool {
-        [NSApplication sharedApplication];
-
-        OSXApplicationDelegate* appDelegate = [[OSXApplicationDelegate alloc] init];
-        if (!appDelegate) {
-            throw std::runtime_error("Cocoa: Failed to create application delegate");
-        }
-        [NSApp setDelegate:appDelegate];
-
-        NSDictionary* defaults = @{@"ApplePressAndHoldEnabled": @NO};
-        [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
-
-        if (![[NSRunningApplication currentApplication] isFinishedLaunching]) {
-            [NSApp run];
-        }
-
-        [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
-
-        // End of Application initialization
-
         NSRect contentRect = NSMakeRect(opts.x, opts.y, std::min(opts.width, opts.maxWidth),
                                         std::min(opts.height, opts.maxHeight));
         NSWindowStyleMask styleMask{};
@@ -230,15 +168,12 @@ Window::Window(const WindowOptions& opts) {
             [window setBackgroundColor:[NSColor clearColor]];
         }
 
-        [NSApp activateIgnoringOtherApps:YES];
         if (opts.visible) {
             [window orderFront:nil];
         }
 
         this->nsWindow = window;
         this->view = view;
-
-        swindow.windows.push_back(this);
     }
 }
 

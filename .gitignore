@@ -1,5 +1,5 @@
 .DS_Store
 smake
 .vscode
-compile_commands.txt
+compile_commands.json
 build

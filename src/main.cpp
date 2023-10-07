@@ -14,7 +14,7 @@ int main() {
     });
 
     queue.SubscribeTo(EventType::CloseRequested, [](const EventData& data) {
-        std::cout << "cLosing " << data.id << std::endl;
+        std::cout << "Closing " << data.id << std::endl;
     });
 
     while (true) {

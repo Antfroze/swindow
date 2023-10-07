@@ -55,6 +55,9 @@ void AppState::Init() {
 
     [app setDelegate:appDelegate];
 
+    NSDictionary* defaults = @{@"ApplePressAndHoldEnabled": @NO};
+    [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
+
     if (![[NSRunningApplication currentApplication] isFinishedLaunching]) {
         [app run];
     }

@@ -8,12 +8,15 @@ enable_language(OBJCXX)
 
 file(GLOB_RECURSE sources ${PROJECT_SOURCE_DIR} "src/*.cpp" "src/*.mm")
 
-add_executable(swindow ${sources} ${objc_sources})
+add_executable(swindow_app ${sources})
+add_library(swindow STATIC ${sources})
 
 target_include_directories(swindow PRIVATE include)
+target_include_directories(swindow_app PRIVATE include)
 
 target_link_libraries(swindow PRIVATE
     "-framework Cocoa"
 )
-
-# 'Cocoa', 'IOKit', 'CoreFoundation', 'CoreVideo'
+target_link_libraries(swindow_app PRIVATE
+    "-framework Cocoa"
+)

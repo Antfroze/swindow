@@ -14,7 +14,7 @@ function smake.build(shouldRun)
   fs.Move('build/compile_commands.json', './')
 
   if shouldRun then
-    run('build/swindow')
+    run('build/swindow_app')
   end
 end
 

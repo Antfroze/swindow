@@ -19,6 +19,7 @@ void WindowEventQueue::Poll() {
     }
 }
 
+// Freezes the thread until a event is available
 void WindowEventQueue::Wait() {
     @autoreleasepool {
         NSEvent* event = [NSApp nextEventMatchingMask:NSEventMaskAny

@@ -3,8 +3,9 @@
 #include <AppKit/AppKit.h>
 #include <Foundation/Foundation.h>
 #include <iostream>
-#include <swindow/internal/event.hpp>
+#include <swindow/internal/events.hpp>
 #include <swindow/internal/global.hpp>
+#include <swindow/internal/platform/osx/app_state.hpp>
 
 using namespace swindow;
 
@@ -84,11 +85,12 @@ using namespace swindow;
 
     NSRect rect = [nsWindow contentRectForFrameRect:[nsWindow frame]];
 
-    window->eventPipeline->HandleEvent(WindowEventType::Resize, rect.size.width, rect.size.height);
+    // window->eventPipeline->HandleEvent(WindowEventType::Resize, rect.size.width, rect.size.height);
+    AppState::HandleEvent(WindowEvent(WindowResizeData(rect.size.width, rect.size.height)));
 }
 
 - (BOOL)windowShouldClose:(NSWindow*)sender {
-    window->eventPipeline->HandleEvent(WindowEventType::Close, window->GetId());
+    // window->eventPipeline->HandleEvent(WindowEventType::Close, window->GetId());
     window->Close();
     return NO;
 }
@@ -146,7 +148,7 @@ using namespace swindow;
 @end
 
 namespace swindow {
-Window::Window(const WindowOptions& opts) : eventPipeline(new WindowEventPipeline()) {
+Window::Window(const WindowOptions& opts) {
     @autoreleasepool {
         [NSApplication sharedApplication];
 
@@ -236,7 +238,6 @@ Window::Window(const WindowOptions& opts) : eventPipeline(new WindowEventPipelin
         this->nsWindow = window;
         this->view = view;
 
-        eventPipeline->Poll();
         swindow.windows.push_back(this);
     }
 }

@@ -1,13 +1,11 @@
 #pragma once
 
 #include <swindow/internal/window.hpp>
-#include "eventpipeline.hpp"
 
 namespace swindow {
 class Window : public InternalWindow {
    public:
-    Window(const WindowOptions& opts);
-    inline ~Window() { delete eventPipeline; }
+    Window(const WindowOptions& opts = WindowOptions());
 
     void Center() override;
     void SetVisible(bool visible) override;
@@ -32,8 +30,6 @@ class Window : public InternalWindow {
     void SetLayer(void* layer);
 
     inline void* GetNSWindow() const { return nsWindow; }
-
-    WindowEventPipeline* eventPipeline;
 
    private:
     void* nsWindow;

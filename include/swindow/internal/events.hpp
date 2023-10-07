@@ -1,6 +1,13 @@
 #pragma once
 
 namespace swindow {
+enum ControlFlow {
+    // Continiously iterage, reguardless of whether or not new events are avaiable to process.
+    Poll,
+    // Pauses the thread when waiting for new events.
+    Wait
+};
+
 enum class WindowEventType {
     // Closing a window
     Close,

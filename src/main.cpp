@@ -5,19 +5,10 @@
 using namespace swindow;
 
 int main() {
-    WindowOptions options;
-    Window window(options);
+    EventLoop loop;
+    Window window;
 
-    window.eventPipeline->SubscribeTo(WindowEventType::Resize, [](unsigned width, unsigned height) {
-        std::cout << height << std::endl;
-    });
-
-    window.eventPipeline->SubscribeTo(
-        WindowEventType::Close, [](unsigned id) { std::cout << "Closing " << id << std::endl; });
-
-    while (!window.ShouldClose()) {
-        window.eventPipeline->Poll();
-    }
+    loop.Run([](const WindowEvent& event) { std::cout << "WHAT" << std::endl; });
 
     return 0;
 }

@@ -1,78 +1,23 @@
 local import = import('smake/libraryInstaller')
 import('smake/gpp', true)
 
-local utils = import('smake/utils/utils')
 --- @type fs
 local fs = import('smake/utils/fs')
 
-local function moveCompiledFiles()
-  local files = utils.ExecuteCommand('ls ./', '*all');
+function smake.build(shouldRun)
+  runIn('build', 'cmake -G Ninja .. && ninja')
 
-  for file in files:gmatch('%S+') do
-    if file:match('o$') then
-      utils.ExecuteCommand('mv ' .. file .. ' lib/')
-    end
+  fs.Move('build/compile_commands.json', './')
+
+  if shouldRun then
+    run('build/swindow')
   end
 end
 
-local function removeCompiledFiles()
-  local files = utils.ExecuteCommand('ls lib/', '*all');
-
-  for file in files:gmatch('%S+') do
-    if file:match('o$') then
-      utils.ExecuteCommand('rm lib/' .. file)
-    end
-  end
-end
-
-function smake.build()
-  if not fs.Exists("lib") then
-    fs.CreateFolder("lib")
+function smake.clean()
+  if fs.Exists("build") then
+    fs.DeleteFolder('build')
   end
 
-  standard('c++2a')
-  flags('-c')
-  inputr('src', 'cpp')
-  inputr('src', 'mm')
-  include({ 'src', 'include' })
-
-  generateCompileFlags()
-  build()
-
-  moveCompiledFiles()
-  utils.ExecuteCommand('ar rcs lib/libswindow.a lib/*.o')
-  removeCompiledFiles()
-end
-
-function smake.run()
-  if not fs.Exists("out") then
-    fs.CreateFolder("out")
-  end
-
-  standard('c++2a')
-  inputr('src', 'cpp')
-  inputr('src', 'mm')
-  include('include')
-
-  if platform.is_osx then
-    framework('Cocoa', 'IOKit', 'CoreFoundation', 'CoreVideo')
-  end
-
-  flags('-O3')
-
-  generateCompileFlags()
-  output('out/swindow')
-  build()
-
-  run('out/swindow')
-end
-
-smake.i = smake.install
-
-function smake.cmake()
-  if not fs.Exists("build") then
-    fs.CreateFolder("build")
-  end
-
-  runIn('build', 'cmake .. && make')
+  fs.CreateFolder("build")
 end

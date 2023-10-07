@@ -18,7 +18,7 @@ struct EventData {
 };
 
 struct WindowResizeData : EventData {
-    WindowResizeData(unsigned id, unsigned width, unsigned height)
+    inline WindowResizeData(unsigned id, unsigned width, unsigned height)
         : EventData(id), width(width), height(height) {}
 
     // new width of window viewport

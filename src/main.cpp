@@ -10,7 +10,7 @@ int main() {
 
     queue.SubscribeTo(EventType::Resized, [](const EventData& data) {
         const WindowResizeData& resizeData = data.As<WindowResizeData>();
-        // std::cout << resizeData.width << std::endl;
+        std::cout << resizeData.width << std::endl;
     });
 
     queue.SubscribeTo(EventType::CloseRequested, [](const EventData& data) {

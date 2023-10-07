@@ -1,6 +1,5 @@
 .DS_Store
 smake
-out
 .vscode
-compile_flags.txt
-lib
+compile_commands.txt
+build

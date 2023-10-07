@@ -1,3 +1,0 @@
-/Users/antfroze/Projects/Syntad/swindow/build/CMakeFiles/swindow.dir
-/Users/antfroze/Projects/Syntad/swindow/build/CMakeFiles/edit_cache.dir
-/Users/antfroze/Projects/Syntad/swindow/build/CMakeFiles/rebuild_cache.dir

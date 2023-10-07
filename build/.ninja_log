@@ -1,8 +1,0 @@
-# ninja log v5
-14	679	1696659571901689164	CMakeFiles/swindow.dir/src/main.cpp.o	91823f4591ea0715
-1	770	1696659119510389362	CMakeFiles/swindow.dir/src/platform/osx/window.mm.o	7cb11b98a4b405c4
-679	893	1696659572117159428	swindow	3c01b00fb907e17b
-17	1081	1696659507879995486	CMakeFiles/swindow.dir/src/platform/osx/event_queue.mm.o	a096a9768121d03f
-17	1189	1696659507987489586	CMakeFiles/swindow.dir/src/platform/osx/app_state.mm.o	3aa6f646f44b805d
-14	898	1696659623413723130	CMakeFiles/swindow.dir/src/main.cpp.o	91823f4591ea0715
-898	1001	1696659623518698226	swindow	3c01b00fb907e17b

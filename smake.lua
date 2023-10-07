@@ -5,6 +5,10 @@ import('smake/gpp', true)
 local fs = import('smake/utils/fs')
 
 function smake.build(shouldRun)
+  if not fs.Exists('build') then
+    fs.CreateFolder('build')
+  end
+
   runIn('build', 'cmake -G Ninja .. && ninja')
 
   fs.Move('build/compile_commands.json', './')
@@ -15,9 +19,9 @@ function smake.build(shouldRun)
 end
 
 function smake.clean()
-  if fs.Exists("build") then
+  if fs.Exists('build') then
     fs.DeleteFolder('build')
   end
 
-  fs.CreateFolder("build")
+  fs.CreateFolder('build')
 end

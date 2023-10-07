@@ -264,15 +264,15 @@ void Window::SetVisible(bool visible) {
 void Window::Close() {
     NSWindow* window = (NSWindow*)nsWindow;
     shouldClose = true;
+    [window.delegate release];
     [window close];
 
-    [window release];
     [(OSXView*)view release];
     [(CALayer*)layer release];
 
-    nsWindow = nullptr;
-    view = nullptr;
-    layer = nullptr;
+    nsWindow = nil;
+    view = nil;
+    layer = nil;
 }
 
 void Window::SetLayer(void* layer) {

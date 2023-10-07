@@ -7,10 +7,10 @@ using namespace swindow;
 int main() {
     WindowEventQueue queue;
     Window window;
+    Window window2;
 
-    queue.SubscribeTo(EventType::Resized, [](const EventData& data) {
-        const WindowResizeData& resizeData = data.As<WindowResizeData>();
-        std::cout << resizeData.width << std::endl;
+    queue.SubscribeTo<WindowResizeData>(EventType::Resized, [](const WindowResizeData& data) {
+        std::cout << data.width << std::endl;
     });
 
     queue.SubscribeTo(EventType::CloseRequested, [](const EventData& data) {

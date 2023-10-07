@@ -7,6 +7,11 @@ namespace swindow {
 using Callback = std::function<void(const EventData&)>;
 
 struct InternalEventQueue {
+    template <typename T>
+    inline void SubscribeTo(EventType type, const std::function<void(const T&)>& callback) {
+        callbacks[type].push_back([callback](const EventData& data) { callback(data.As<T>()); });
+    }
+
     inline void SubscribeTo(EventType type, const Callback& callback) {
         callbacks[type].push_back(callback);
     }

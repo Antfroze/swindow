@@ -20,3 +20,5 @@ target_link_libraries(swindow PRIVATE
 target_link_libraries(swindow_app PRIVATE
     "-framework Cocoa"
 )
+
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")

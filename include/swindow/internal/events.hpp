@@ -11,7 +11,7 @@ struct EventData {
 
     template <typename T>
     inline T As() const {
-        return reinterpret_cast<const T&>(*this);
+        return static_cast<const T&>(*this);
     }
 
     unsigned id;

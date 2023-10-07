@@ -7,8 +7,7 @@ class WindowEventQueue;
 
 class AppState {
    public:
-    static void Init();
-    static void SetQueue(WindowEventQueue* eventQueue);
+    static void Init(WindowEventQueue* eventQueue);
     static void HandleEvent(EventType type, const EventData& data);
 
    private:

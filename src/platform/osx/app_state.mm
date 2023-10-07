@@ -36,8 +36,8 @@
                                          subtype:0
                                            data1:0
                                            data2:0];
-    [NSApp postEvent:event atStart:YES];
 
+    [NSApp postEvent:event atStart:YES];
     [NSApp stop:nil];
 }
 @end
@@ -45,7 +45,8 @@
 namespace swindow {
 WindowEventQueue* AppState::eventQueue = nullptr;
 
-void AppState::Init() {
+void AppState::Init(WindowEventQueue* eventQueue) {
+    AppState::eventQueue = eventQueue;
     NSApplication* app = [NSApplication sharedApplication];
     ApplicationDelegate* appDelegate = [[ApplicationDelegate alloc] init];
 
@@ -64,10 +65,6 @@ void AppState::Init() {
 
     [app setActivationPolicy:NSApplicationActivationPolicyRegular];
     [app activateIgnoringOtherApps:YES];
-}
-
-void AppState::SetQueue(WindowEventQueue* eventQueue) {
-    AppState::eventQueue = eventQueue;
 }
 
 void AppState::HandleEvent(EventType type, const EventData& data) {

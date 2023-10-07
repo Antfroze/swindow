@@ -14,7 +14,7 @@ struct WindowEventQueue : public InternalEventQueue {
             throw std::runtime_error("On MacOS the EventQueue must be on the main thread.");
         }
 
-        AppState::SetQueue(this);
+        AppState::Init(this);
     }
 
     void Poll() override;
